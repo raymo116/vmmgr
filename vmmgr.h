@@ -8,10 +8,11 @@
 
 #define BITS_16 0b1111111111111111
 #define BITS_08 0b11111111
+typedef unsigned char BYTE;
 
 typedef struct {
-    unsigned char pg_num;
-    unsigned char pg_offset;
+    BYTE pg_num;
+    BYTE pg_offset;
 } ladr;
 
 typedef struct {
