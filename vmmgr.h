@@ -1,5 +1,5 @@
-#ifndef HEADERFILE_H
-#define HEADERFILE_H
+#ifndef VMMGR
+#define VMMGR
 
 #include <stdlib.h>
 #include <unistd.h>
@@ -18,22 +18,22 @@ typedef struct {
 typedef struct {
     ladr* arr;
     int len;
-} adrArray;
+} addrArray;
 
-void readFile(FILE*, adrArray*);
+void readFile(FILE*, addrArray*);
 int checkLineNumber(FILE*);
-void scrubNums(adrArray*);
-adrArray* loadAdresses(char*);
-void printAddresses(adrArray*);
+void scrubNums(addrArray*);
+addrArray* loadAdresses(char*);
+void printAddresses(addrArray*);
 
-void printAddresses(adrArray* na) {
+void printAddresses(addrArray* na) {
     int i;
     for(i = 0; i < na->len; ++i) {
         printf("%u - %u\n", na->arr[i].pg_num, na->arr[i].pg_offset);
     }
 }
 
-void readFile(FILE* fptr, adrArray* na) {
+void readFile(FILE* fptr, addrArray* na) {
     na->arr = malloc(sizeof(ladr)*checkLineNumber(fptr));
     na->len = 0;
     long tempNum;
@@ -59,8 +59,8 @@ void readFile(FILE* fptr, adrArray* na) {
     }
 }
 
-adrArray* loadAdresses(char* fp) {
-    adrArray* na = malloc(sizeof(adrArray));
+addrArray* loadAdresses(char* fp) {
+    addrArray* na = malloc(sizeof(addrArray));
 
     FILE* fptr;
     if((fptr = fopen(fp, "r+")) == NULL) {
