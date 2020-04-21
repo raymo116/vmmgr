@@ -25,12 +25,56 @@ If in page table
 - Pull from memory
 */
 
-int main(int argc, char const *argv[]) {
-    char* test_fp = "address.txt";
-    char* mem_fp = "BACKING_STORE.bin";
+int find_padr(FILE*, page_table*, physical_memory*, tlb*, int);
+void run_sim(FILE*, page_table*, physical_memory*, tlb*, addrArray*);
 
+int main(int argc, char const *argv[]) {
+    char* test_fp = "test.txt";
+    char* mem_fp = "BACKING_STORE.bin";
+    FILE* fptr = fopen(mem_fp, "r+");
+
+    /* find addresses */
     addrArray* na = loadAdresses(test_fp);
-    printAddresses(na);
+    /*printAddresses(na);*/
+
+    /* create table */
+    page_table* pt = init_page_table();
+    physical_memory* pm = init_physical_mem();
+    tlb* t = init_tlb();
+
+    run_sim(fptr, pt, pm, t, na);
+
+    /* free memory */
+    delete_page_table(pt);
+    delete_physical_mem(pm);
+    delete_tlb(t);
 
     return 0;
+}
+
+void run_sim(FILE* fptr, page_table* pt, physical_memory* pm, tlb* t, addrArray* na) {
+    int i, padr, offset, value;
+    for(i = 0; i < na->len; ++i) {
+        padr = find_padr(fptr, pt, pm, t, na->arr[i].pg_num);
+        offset = na->arr[i].pg_offset;
+
+        value = pm->arr[padr]->arr[offset];
+        printf("%d\n", value);
+    }
+}
+
+int find_padr(FILE* fptr, page_table* pt, physical_memory* pm, tlb* t, int curr) {
+    int r = is_in_tlb(curr, t);
+
+    if(r != -1) return r;
+
+    if(pt->arr[curr] == -1) {
+        frame* f = init_frame(fptr, curr);
+        int b = add_physical_mem(pm, f);
+        insert_tbl_entry(pt, curr, b);
+    }
+
+    insert_tlb_entry(t, curr, pt->arr[curr]);
+
+    return pt->arr[curr];
 }
