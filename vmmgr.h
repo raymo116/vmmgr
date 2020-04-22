@@ -59,7 +59,7 @@ int checkLineNumber(FILE* fptr) {
 
 /* read in addresses from the file */
 addrArray* loadAdresses(FILE* fptr) {
-    addrArray* na = malloc(sizeof(addrArray))
+    addrArray* na = malloc(sizeof(addrArray));
 
     /* create an array of addresses */
     na->arr = malloc(sizeof(ladr)*checkLineNumber(fptr));
