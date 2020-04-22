@@ -1,3 +1,12 @@
+/*
+* @name: cust_data_types.c
+* @author: Matt Raymond
+* @email: raymo116@mail.chapman.edu
+* @id: 2270559
+* @date: 04/21/2020
+* @version: 1.0
+*/
+
 #ifndef CUST_DATA_TYPES
 #define CUST_DATA_TYPES
 
@@ -46,6 +55,8 @@ void delete_frame(frame* f) {
     free(f);
 }
 
+
+
 /*  ----------------  */
 /* |PAGE TABLE ENTRY| */
 /*  ----------------  */
@@ -70,6 +81,8 @@ pt_entry* init_pt_entry(int l, int p) {
 void delete_pt_entry(pt_entry* pte) {
     free(pte);
 }
+
+
 
 /*  ----------  */
 /* |PAGE TABLE| */
@@ -106,6 +119,8 @@ void delete_page_table(page_table* pt) {
     free(pt);
 }
 
+
+
 /*  ---------  */
 /* |TLB ENTRY| */
 /*  ---------  */
@@ -129,6 +144,8 @@ tlb_entry* init_tlb_entry(int l, int p) {
 void delete_tlb_entry(tlb_entry* te) {
     free(te);
 }
+
+
 
 /*  ---  */
 /* |TLB| */
@@ -183,6 +200,12 @@ void delete_tlb(tlb* t) {
     free(t);
 }
 
+
+
+/*  ---------------  */
+/* |PHYSICAL MEMORY| */
+/*  ---------------  */
+
 /* physical memory */
 typedef struct {
     int len;
@@ -190,6 +213,7 @@ typedef struct {
     frame** arr;
 } physical_memory;
 
+/* initializes physical memory */
 physical_memory* init_physical_mem() {
     physical_memory* pm = malloc(sizeof(physical_memory));
     pm->len = FRM_LEN;
@@ -199,11 +223,13 @@ physical_memory* init_physical_mem() {
     return pm;
 }
 
+/* adds a new frame to physical memory */
 int add_physical_mem(physical_memory* pm, frame* f) {
     pm->arr[++pm->bottom] = f;
     return pm->bottom;
 }
 
+/* free memory */
 void delete_physical_mem(physical_memory* pm) {
     /* Free pages */
     while(pm->bottom>-1) free(pm->arr[pm->bottom--]);
