@@ -22,17 +22,17 @@
  */
 int main(int argc, char const *argv[]) {
     /* declaring file names */
-    char* mem_fp = "BACKING_STORE.bin";
-    char* output_fp = "output.csv";
+    // char* mem_fp = "BACKING_STORE.bin";
 
     /* checks to make sure the input format is correct */
-    if(argc != 2) {
-        printf("Usage: ./vmmgr <address file>\n");
+    if(argc != 3) {
+        printf("Usage: ./vmmgr <backing_store> <address file>\n");
         return -1;
     }
     /* opens the file to read */
-    FILE* address_fptr = fopen(argv[1], "r");
-    if(address_fptr == NULL) {
+    FILE* mem_fptr = fopen(argv[1], "r");
+    FILE* address_fptr = fopen(argv[2], "r");
+    if((address_fptr == NULL) || (address_fptr == NULL)) {
         printf("You cannot open this file\n");
         exit(-1);
     }
@@ -48,7 +48,10 @@ int main(int argc, char const *argv[]) {
     tlb* t = init_tlb();
 
     /* Run the simulation */
-    run_sim(mem_fp, output_fp, pt, pm, t, na);
+    run_sim(mem_fptr, pt, pm, t, na);
+
+    /* close files */
+    fclose(mem_fptr);
 
     /* free memory */
     delete_page_table(pt);

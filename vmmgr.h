@@ -127,13 +127,10 @@ int find_padr(FILE* fptr, page_table* pt, physical_memory* pm, tlb* t, int curr,
 }
 
 /* run a memory-referencing simulation */
-void run_sim(char* mem, char* output, page_table* pt, physical_memory* pm, tlb* t, addrArray* na) {
-    /* open files */
-    FILE* output_fptr = fopen(output, "w");
-    FILE* input_fptr = fopen(mem, "r");
+void run_sim(FILE* input_fptr, page_table* pt, physical_memory* pm, tlb* t, addrArray* na) {
 
     /* checks for correct permissions */
-    if((output_fptr == NULL) || (input_fptr == NULL)) {
+    if(input_fptr == NULL) {
         printf("You don't have permission to open this file\n");
         exit(-1);
     }
@@ -143,7 +140,6 @@ void run_sim(char* mem, char* output, page_table* pt, physical_memory* pm, tlb* 
     int tlb_hits = 0;
 
     /* creates file header */
-    fprintf(output_fptr, "Logical Addr,Physical Addr,Offset,Value\n");
 
     /* tries to grab every address in the address file */
     int i, padr, offset, value;
@@ -158,15 +154,11 @@ void run_sim(char* mem, char* output, page_table* pt, physical_memory* pm, tlb* 
         value = pm->arr[padr]->arr[offset];
 
         /* saves the result to a file */
-        fprintf(output_fptr, "%d,%d,%d,%d\n", na->arr[i].pg_num, padr, offset, value);
+        printf("Virtual Address: %d Physical Address: %d Value: %d\n", na->arr[i].pg_num, padr, value);
     }
 
     /* adds collected stats to the end of the csv file */
-    fprintf(output_fptr, "\n,,,\nPage Faults,TLB Hits\n%d%%,%d%%\n", (page_faults*100)/na->len, (tlb_hits*100)/na->len);
-
-    /* close files */
-    fclose(output_fptr);
-    fclose(input_fptr);
+    printf("\n\nPage Faults: %d\nPage Fault Rate: %d%% \nTLB Hits: %d\nTLB Hit Rate: %d%%\n", page_faults, (page_faults*100)/na->len, tlb_hits, (tlb_hits*100)/na->len);
 }
 
 #endif
