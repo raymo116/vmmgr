@@ -44,8 +44,8 @@ int checkLineNumber(FILE* fptr) {
         if(ret == 1)
             ++lineNumber;
         else if(errno != 0) {
-            perror("scanf:");
-            break;
+            perror("Error reading file:");
+            exit(-1);
         } else if(ret == EOF) {
             break;
         } else
@@ -85,8 +85,8 @@ addrArray* loadAdresses(FILE* fptr) {
             ++na->len;
         }
         else if(errno != 0) {
-            perror("scanf:");
-            break;
+            perror("Error reading file:");
+            exit(-1);
         } else if(ret == EOF) {
             break;
         }

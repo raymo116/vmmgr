@@ -33,7 +33,8 @@ int main(int argc, char const *argv[]) {
     FILE* mem_fptr = fopen(argv[1], "r");
     FILE* address_fptr = fopen(argv[2], "r");
     if((address_fptr == NULL) || (address_fptr == NULL)) {
-        printf("You cannot open this file\n");
+        perror("Error reading file:");
+        // printf("You cannot open this file\n");
         exit(-1);
     }
 
