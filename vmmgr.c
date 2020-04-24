@@ -21,8 +21,6 @@
  * addresses.
  */
 int main(int argc, char const *argv[]) {
-    /* declaring file names */
-    // char* mem_fp = "BACKING_STORE.bin";
 
     /* checks to make sure the input format is correct */
     if(argc != 3) {
@@ -34,7 +32,6 @@ int main(int argc, char const *argv[]) {
     FILE* address_fptr = fopen(argv[2], "r");
     if((address_fptr == NULL) || (address_fptr == NULL)) {
         perror("Error reading file:");
-        // printf("You cannot open this file\n");
         exit(-1);
     }
 
