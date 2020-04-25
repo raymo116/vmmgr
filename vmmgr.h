@@ -151,7 +151,7 @@ void run_sim(FILE* input_fptr, page_table* pt, physical_memory* pm, tlb* t, addr
         offset = na->arr[i].pg_offset;
 
         /* finds the value at that address */
-        value = pm->arr[padr]->arr[offset];
+        value = (char)(pm->arr[padr]->arr[offset]);
 
         /* saves the result to a file */
         printf("Virtual Address: %d Physical Address: %d Value: %d\n", na->arr[i].pg_num, padr, value);
